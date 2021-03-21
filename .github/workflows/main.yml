@@ -21,6 +21,14 @@ jobs:
       - name: Instalación de dependencias
         uses: bahmutov/npm-install@v1
       - run: npm build
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_GAMER_QUEST_CO }}'
+          channelId: staging
+          projectId: gamer-quest-co
+        env:
+          FIREBASE_CLI_PREVIEWS: hostingchannels
       - name: Comprimiendo entregable
         uses: thedoctor0/zip-release@master
         with:
