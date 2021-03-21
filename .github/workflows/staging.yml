@@ -20,7 +20,7 @@ jobs:
         uses: phips28/gh-action-bump-version@master
       - name: Instalación de dependencias
         uses: bahmutov/npm-install@v1
-      - run: npm build
+      - run: npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
