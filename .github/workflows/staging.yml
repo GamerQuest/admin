@@ -15,6 +15,8 @@ jobs:
           node-version: 15.x
       - name: Actualización de versión
         uses: phips28/gh-action-bump-version@master
+        with:
+          skip-tag: true
       - name: Instalación de dependencias
         uses: bahmutov/npm-install@v1
         with:
