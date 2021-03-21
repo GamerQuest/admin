@@ -1,0 +1,27 @@
+name: Integración a -> Producción
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Usando node.js v15.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 15.x
+      - name: Actualización de versión
+        uses: phips28/gh-action-bumb-version@master
+      - name: Instalación de dependencias
+        uses: bahmutov/npm-install@v1
+      - run: npm build
+      - name: Comprimiendo entregable
+        uses: thedoctor0/zip-release@master
+        with:
+          directory: 'build'
