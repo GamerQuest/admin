@@ -39,7 +39,7 @@ jobs:
       - name: Desplegando a Firebase -> Producción
         uses: w9jds/firebase-action@master
         with:
-          args: hosting:channel:deploy live
+          args: hosting:channel:deploy live --project gamer-quest-co
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
       - name: Comprimiendo entregable
