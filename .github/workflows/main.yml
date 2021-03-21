@@ -21,14 +21,28 @@ jobs:
       - name: Instalación de dependencias
         uses: bahmutov/npm-install@v1
       - run: npm run build
-      - uses: FirebaseExtended/action-hosting-deploy@v0
+      - name: Archivar la compilación
+        uses: actions/upload-artifact@v2
         with:
-          repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_GAMER_QUEST_CO }}'
-          channelId: live
-          projectId: gamer-quest-co
+          name: build
+          path: build
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: action/checkout@v2
+      - name: Descargar Compilación
+        uses: actions/download-artifact@v2
+        with:
+          name: build
+          path: build
+      - name: Desplegando a Firebase -> Producción
+        uses: w9jds/firebase-action@master
+        with:
+          args: hosting:channel:deploy live
         env:
-          FIREBASE_CLI_PREVIEWS: hostingchannels
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
       - name: Comprimiendo entregable
         uses: thedoctor0/zip-release@master
         with:
