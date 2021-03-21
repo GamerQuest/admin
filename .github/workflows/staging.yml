@@ -17,6 +17,8 @@ jobs:
         uses: phips28/gh-action-bump-version@master
       - name: Instalación de dependencias
         uses: bahmutov/npm-install@v1
+        with:
+          useRollingCache: true
       - run: npm run build
       - name: Archivar la compilación
         uses: actions/upload-artifact@v2
@@ -28,7 +30,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: action/checkout@v2
+      - uses: actions/checkout@v2
       - name: Descargar Compilación
         uses: actions/download-artifact@v2
         with:
