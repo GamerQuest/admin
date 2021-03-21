@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Signika:wght@300;400;500;600;700&display=swap');
+
+*::-webkit-scrollbar {
+  width: 6px;
+}
+
+*::-webkit-scrollbar-track {
+  background-color: #E0E0E0;
+  border-radius: 3px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #BDBDBD;
+  border-radius: 3px;
+}
+
+body {
+  margin: 0;
+  background-color: #f5f5f5;
+}

@@ -1,0 +1,32 @@
+name: Integración a -> Pruebas
+on:
+  push:
+    branches:
+      - staging
+  pull_request:
+    branches:
+      - staging
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Usando node.js v15.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 15.x
+      - name: Actualización de versión
+        uses: phips28/gh-action-bump-version@master
+      - name: Instalación de dependencias
+        uses: bahmutov/npm-install@v1
+      - run: npm build
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_GAMER_QUEST_CO }}'
+          channelId: staging
+          expires: 6w
+          projectId: gamer-quest-co
+        env:
+          FIREBASE_CLI_PREVIEWS: hostingchannels
