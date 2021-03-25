@@ -9,10 +9,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Usando node.js v15.x
-        uses: actions/setup-node@v1
-        with:
-          node-version: 15.x
+#      - name: Usando node.js v15.x
+#        uses: actions/setup-node@v1
+#        with:
+#          node-version: 15.x
       - name: Actualización de versión
         uses: phips28/gh-action-bump-version@master
         with:
