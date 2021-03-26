@@ -22,6 +22,7 @@ function* set({ payload }: ActionType) {
     yield put<ActionType>({ type: ACTION_TYPES.SIGN_UP.FULFILLED })
   } else {
     yield put<ActionType>({ type: ACTION_TYPES.SET.REJECTED, payload: { err } })
+    yield put<ActionType>({ type: ACTION_TYPES.SIGN_OUT.FETCH })
   }
 }
 
@@ -45,6 +46,17 @@ function* get({ payload }: ActionType) {
     yield put<ActionType>({ type: ACTION_TYPES.SIGN_IN.FULFILLED })
   } else {
     yield put<ActionType>({ type: ACTION_TYPES.GET.REJECTED, payload: { err } })
+    yield put<ActionType>({ type: ACTION_TYPES.SIGN_OUT.FETCH })
+  }
+}
+
+function* signOut() {
+  yield put<ActionType>({ type: ACTION_TYPES.SIGN_OUT.PENDING })
+  const { res } = yield call(api.signOut)
+  if (res) {
+    yield put<ActionType>({ type: ACTION_TYPES.SIGN_OUT.FULFILLED })
+  } else {
+    yield put<ActionType>({ type: ACTION_TYPES.SIGN_OUT.REJECTED })
   }
 }
 
@@ -54,6 +66,7 @@ function* sagas() {
     takeLatest(ACTION_TYPES.SET.FETCH, set),
     takeLatest(ACTION_TYPES.SIGN_IN.FETCH, signIn),
     takeLatest(ACTION_TYPES.GET.FETCH, get),
+    takeLatest(ACTION_TYPES.SIGN_OUT.FETCH, signOut),
   ])
 }
 
