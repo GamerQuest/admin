@@ -1,13 +1,15 @@
 import { List, ListItem, ListItemIcon, ListItemText, Tooltip } from '@material-ui/core'
-import { mdiViewDashboardOutline } from '@mdi/js'
+import { mdiGoogleController, mdiViewDashboardOutline } from '@mdi/js'
 import Icon from '@mdi/react'
 import React, { Dispatch, SetStateAction } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { ROUTE_PATHS } from 'router/routes'
+import { ROUTE_PATHS as GAMES_ROUTES } from 'games/router/routes'
+
 
 const MENU_ITEMS = [
   { icon: mdiViewDashboardOutline, label: 'Inicio', path: ROUTE_PATHS.LANDING },
-  // { icon: mdiGoogleController, label: 'Juegos', path: GAMES_ROUTES.BASE },
+  { icon: mdiGoogleController, label: 'Juegos', path: GAMES_ROUTES.BASE },
   // { icon: mdiYoutubeStudio, label: 'YouTube', path: APP_ROUTES_PATHS.YOUTUBE },
   // { icon: mdiFacebook, label: 'Facebook', path: APP_ROUTES_PATHS.FACEBOOK },
   // { icon: mdiTwitter, label: 'Twitter', path: APP_ROUTES_PATHS.TWITTER },
