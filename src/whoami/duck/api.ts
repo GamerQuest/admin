@@ -21,3 +21,21 @@ export async function set(user: Iam) {
     return { err }
   }
 }
+
+export async function signIn(email: string, password: string) {
+  try {
+    const userCredential = await auth.signInWithEmailAndPassword(email, password)
+    return { res: userCredential.user?.uid }
+  } catch (err) {
+    return { err: err.code }
+  }
+}
+
+export async function get(uid: string) {
+  try {
+    const documentSnapshot = await COLLECTION_REF.doc(uid).get()
+    return { res: documentSnapshot.data() }
+  } catch (err) {
+    return { err: err.code }
+  }
+}
