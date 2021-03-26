@@ -7,3 +7,8 @@ export const signUp = yup.object().shape({
   email: emailField,
   password: requiredField('Usa una contraseña segura'),
 })
+
+export const signIn = yup.object().shape({
+  email: emailField,
+  password: requiredField(),
+})

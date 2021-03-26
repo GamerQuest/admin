@@ -25,10 +25,35 @@ function* set({ payload }: ActionType) {
   }
 }
 
+function* signIn({ payload }: ActionType) {
+  const { email, password } = payload!
+  yield put<ActionType>({ type: ACTION_TYPES.SIGN_IN.PENDING })
+  const { res, err } = yield call(api.signIn, email!, password!)
+  if (res) {
+    yield put<ActionType>({ type: ACTION_TYPES.GET.FETCH, payload: { id: res } })
+  } else {
+    yield put<ActionType>({ type: ACTION_TYPES.SIGN_IN.REJECTED, payload: { err } })
+  }
+}
+
+function* get({ payload }: ActionType) {
+  const { id } = payload!
+  yield put<ActionType>({ type: ACTION_TYPES.GET.PENDING })
+  const { res, err } = yield call(api.get, id!)
+  if (res) {
+    yield put<ActionType>({ type: ACTION_TYPES.GET.FULFILLED, payload: { user: res } })
+    yield put<ActionType>({ type: ACTION_TYPES.SIGN_IN.FULFILLED })
+  } else {
+    yield put<ActionType>({ type: ACTION_TYPES.GET.REJECTED, payload: { err } })
+  }
+}
+
 function* sagas() {
   yield all([
     takeLatest(ACTION_TYPES.SIGN_UP.FETCH, signUp),
     takeLatest(ACTION_TYPES.SET.FETCH, set),
+    takeLatest(ACTION_TYPES.SIGN_IN.FETCH, signIn),
+    takeLatest(ACTION_TYPES.GET.FETCH, get),
   ])
 }
 

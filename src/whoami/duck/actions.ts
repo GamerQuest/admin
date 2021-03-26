@@ -7,13 +7,17 @@ import { Iam } from 'whoami/duck/store'
 export const ACTION_TYPES = {
   SIGN_UP: buildAsyncAction('whoami_sign_up'),
   SET: buildAsyncAction('whoami_set'),
+  SIGN_IN: buildAsyncAction('whoami_sign_in'),
+  GET: buildAsyncAction('whoami_get'),
 }
 
 export interface ActionType extends Action<string> {
   payload?: {
-    user?: Iam,
-    password?: string,
-    err?: string,
+    user?: Iam
+    password?: string
+    err?: string
+    email?: string
+    id?: string
   }
 }
 
@@ -23,7 +27,13 @@ function useActions() {
     type: ACTION_TYPES.SIGN_UP.FETCH,
     payload: { user, password },
   })
-  return { signUp }
+
+  const signIn = (email: string, password: string) => dispatch({
+    type: ACTION_TYPES.SIGN_IN.FETCH,
+    payload: { email, password },
+  })
+
+  return { signUp, signIn }
 }
 
 export default useActions
