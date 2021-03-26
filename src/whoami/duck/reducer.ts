@@ -11,6 +11,10 @@ function reducer(state = storeDefault, action: ActionType): Store {
     case ACTION_TYPES.SET.FULFILLED: {
       return { ...state, iam: action.payload!.user! }
     }
+    case ACTION_TYPES.SIGN_OUT.FULFILLED: {
+      return { ...storeDefault }
+    }
+    case ACTION_TYPES.SIGN_OUT.REJECTED:
     case ACTION_TYPES.SIGN_IN.REJECTED:
     case ACTION_TYPES.SET.REJECTED:
     case ACTION_TYPES.SIGN_UP.REJECTED: {

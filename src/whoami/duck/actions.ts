@@ -9,6 +9,7 @@ export const ACTION_TYPES = {
   SET: buildAsyncAction('whoami_set'),
   SIGN_IN: buildAsyncAction('whoami_sign_in'),
   GET: buildAsyncAction('whoami_get'),
+  SIGN_OUT: buildAsyncAction('whoami_sign_out'),
 }
 
 export interface ActionType extends Action<string> {
@@ -33,7 +34,9 @@ function useActions() {
     payload: { email, password },
   })
 
-  return { signUp, signIn }
+  const signOut = () => dispatch({ type: ACTION_TYPES.SIGN_OUT.FETCH })
+
+  return { signUp, signIn, signOut }
 }
 
 export default useActions

@@ -39,3 +39,12 @@ export async function get(uid: string) {
     return { err: err.code }
   }
 }
+
+export async function signOut() {
+  try {
+    await auth.signOut()
+    return { res: 200 }
+  } catch (err) {
+    return { err: err.code }
+  }
+}
