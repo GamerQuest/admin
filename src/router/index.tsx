@@ -1,4 +1,5 @@
 import NotFoundPage from 'components/pages/404page'
+import GamesRoutes, { ROUTE_PATHS as GAMES_ROUTES } from 'games/router/routes'
 import MainLayout from 'layouts/main'
 import React from 'react'
 import { Route, Switch } from 'react-router-dom'
@@ -15,6 +16,7 @@ function AppRouter() {
         <MainLayout>
           <Switch>
             <Route path={ ROUTE_PATHS.SIGN_UP } component={ SignUpPage } />
+            <Route path={ GAMES_ROUTES.BASE } component={ GamesRoutes } />
             <Route path="*" component={ NotFoundPage } />
           </Switch>
         </MainLayout>
