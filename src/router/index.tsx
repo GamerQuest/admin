@@ -12,10 +12,10 @@ function AppRouter() {
   return (
     <Switch>
       <Route path={ ROUTE_PATHS.SIGN_IN } component={ SignInPage } />
+      <Route path={ ROUTE_PATHS.SIGN_UP } component={ SignUpPage } />
       <PrivateRoute path={ ROUTE_PATHS.LANDING } redirectTo={ ROUTE_PATHS.SIGN_IN }>
         <MainLayout>
           <Switch>
-            <Route path={ ROUTE_PATHS.SIGN_UP } component={ SignUpPage } />
             <Route path={ GAMES_ROUTES.BASE } component={ GamesRoutes } />
             <Route path="*" component={ NotFoundPage } />
           </Switch>
