@@ -1,40 +1,32 @@
 import { cloud, firestore } from 'core/firebase'
+import { Game } from 'games/duck/store'
 
 const COLLECTION_PATH = 'GAMES'
 export const COLLECTION_REF = firestore.collection(COLLECTION_PATH)
 const CLOUD_REF = cloud.ref()
 
-export async function setDocument(game: any) {
+export async function setDocument(game: Game) {
   try {
-    await COLLECTION_REF.doc(game.id).set({ ...game })
-    return { res: 200 }
+    let { cover: [coverUrl], thumbnail: [thumbnailUrl] } = game
+    if (!coverUrl.startsWith('http')) {
+      coverUrl = await uploadImage(game.id, 'cover', coverUrl)
+    }
+    if (!thumbnailUrl.startsWith('http')) {
+      thumbnailUrl = await uploadImage(game.id, 'thumbnail', thumbnailUrl)
+    }
+    await COLLECTION_REF.doc(game.id).set({ ...game, cover: [coverUrl], thumbnail: [thumbnailUrl] })
+    return { res: { ...game, cover: [coverUrl], thumbnail: [thumbnailUrl] } }
   } catch (err) {
     return { err }
   }
 }
 
-export async function uploadImage(content: { content: string, key: string, gameId: string }[]) {
+export async function uploadImage(gameId: string, imageKey: string, imageData: string) {
   try {
-    const res = await Promise.allSettled(
-      content.map(({ content, key, gameId }) => {
-        const now = new Date()
-        const timestamp = now.getTime()
-        const child = CLOUD_REF.child(`${ COLLECTION_PATH }/${ gameId }/${ key }_${ timestamp }.jpg`)
-        return child.putString(content.substring(23), 'base64', { contentType: 'image/jpg' })
-      }),
-    )
-    return {
-      res: content.map((item, index) => {
-        if (res[index].status === 'fulfilled') {
-          return ({
-            // @ts-ignore
-            content: res[index].value.getDownloadURL(),
-            key: item.key,
-            gameId: item.gameId,
-          })
-        }
-      }),
-    }
+    const now = new Date().getTime()
+    const child = CLOUD_REF.child(`${ COLLECTION_PATH }/${ gameId }/${ imageKey }_${ now }.jpg`)
+    await child.putString(imageData.substring(23), 'base64', { contentType: 'image/jpg' })
+    return child.getDownloadURL()
   } catch (err) {
     return { err }
   }
@@ -44,20 +36,20 @@ export async function updateDocument(dataList: { content: any, key: string, game
   try {
     const res = await Promise.allSettled(
       dataList.map(
-        data => COLLECTION_REF.doc(data.gameId).update({ [data.key]: data.content }),
+        data => COLLECTION_REF.doc(data.gameId).set({ [data.key]: data.content }),
       ),
     )
     return {
-      res: dataList.map((data, index) => {
-        if (res[index].status === 'fulfilled') {
-          return ({
-            // @ts-ignore
-            content: res[index].value.getDownloadURL(),
-            key: data.key,
-            gameId: data.gameId,
-          })
+      res: res.map(async (item, index) => {
+        if (item.status === 'fulfilled') {
+          return {
+            content: item.value,
+            key: dataList[index].key,
+            gameId: dataList[index].gameId,
+          }
         }
-      }),
+        return null
+      }).filter(el => !!el),
     }
   } catch (err) {
     return { err }
